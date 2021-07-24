@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-class PhonebookForm extends Component {
+class ContactForm extends Component {
   state = {
     name: "",
     number: "",
@@ -9,17 +9,18 @@ class PhonebookForm extends Component {
 
   nameInputId = uuidv4();
   telInputId = uuidv4();
-  filterId = uuidv4();
+
+  onHandleSubmit = (event) => {
+    event.preventDefault();
+    if (this.props.sameNameDenied(this.state.name)) {
+      return this.props.onSubmit(this.state);
+    }
+    this.reset();
+  };
 
   onHandleContactForm = (event) => {
     const { name, value } = event.currentTarget;
     this.setState({ [name]: value });
-  };
-
-  onHandleSubmit = (event) => {
-    event.preventDefault();
-    this.props.onSubmit(this.state);
-    this.reset();
   };
 
   reset = () =>
@@ -58,13 +59,7 @@ class PhonebookForm extends Component {
               required
             />
           </label>
-          <input
-            value={this.props.filter}
-            onChange={this.props.onHandleFilter}
-            type="text"
-            name="filter"
-            id={this.filterId}
-          ></input>
+
           <button>Add contact</button>
         </form>
       </>
@@ -72,4 +67,4 @@ class PhonebookForm extends Component {
   }
 }
 
-export default PhonebookForm;
+export default ContactForm;

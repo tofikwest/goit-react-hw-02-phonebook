@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class Contacts extends Component {
+class ContactsList extends Component {
   render() {
     const { filter, contacts } = this.props;
 
@@ -9,11 +9,18 @@ class Contacts extends Component {
           contact.name.toLowerCase().includes(filter.toLowerCase())
         )
       : contacts;
+
     return (
       <ul>
         {filteredContacts.map(({ id, name, number }) => (
           <li key={id}>
             {name}: {number}
+            <button
+              type="button"
+              onClick={() => this.props.onDeleteContact(id)}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>
@@ -21,8 +28,4 @@ class Contacts extends Component {
   }
 }
 
-export default Contacts;
-
-// .filter((item) => {
-//   return item.indexOf(this.state.filter) > -1;
-// }
+export default ContactsList;

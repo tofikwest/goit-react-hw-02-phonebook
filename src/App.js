@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import Contacts from "./components/contacts/Contacts";
-import PhonebookForm from "./components/phonebookForm/PhonebookForm";
+import ContactsList from "./components/contactsList/ContactsList";
+import Filter from "./components/filter/Filter";
+import ContactForm from "./components/form/ContactForm";
 import Section from "./components/section/Section";
 
 class App extends Component {
@@ -15,28 +16,47 @@ class App extends Component {
   };
   onFormSubmitHandler = (data) => {
     this.setState({ contacts: [...this.state.contacts, data] });
-    console.log(this.state.contacts);
   };
 
   onHandleFilter = (e) => {
     this.setState({ filter: e.currentTarget.value });
   };
 
+  onHandleContactForm = (event) => {
+    const { name, value } = event.currentTarget;
+    this.setState({ [name]: value });
+  };
+
+  sameNameDenied = (name) => {
+    if (this.state.contacts.find((contact) => contact.name === name)) {
+      alert("Введите другое имя");
+      return;
+    }
+  };
+  deleteContact = (id) => {
+    this.setState((prevState) => ({
+      contacts: prevState.contacts.filter((contact) => contact.id !== id),
+    }));
+  };
   render() {
     return (
       <>
         <Section title={"Phonebook"}>
-          <PhonebookForm
+          <ContactForm
             onHandlerFilter={this.onHandlerFilter}
             onSubmit={this.onFormSubmitHandler}
-            onHandleFilter={this.onHandleFilter}
+            sameNameDenied={this.sameNameDenied}
           />
         </Section>
         <Section title={"Contacts"}>
-          <Contacts
+          <Filter
+            onHandlerFilter={this.onHandleContactForm}
+            filter={this.state.filter}
+          />
+          <ContactsList
             contacts={this.state.contacts}
             filter={this.state.filter}
-            onDeleteContact={this.onDeleteContact}
+            onDeleteContact={this.deleteContact}
           />
         </Section>
       </>
