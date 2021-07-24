@@ -1,42 +1,42 @@
-import React, { Component } from 'react';
-import FeedbackOptions from './components/reviewsSection/FeedbackOptions';
-import Statistics from './components/reviewsSection/Statistics';
-import Section from './components/Section';
+import React, { Component } from "react";
+import Contacts from "./components/contacts/Contacts";
+import PhonebookForm from "./components/phonebookForm/PhonebookForm";
+import Section from "./components/section/Section";
 
 class App extends Component {
   state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+    contacts: [
+      { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
+      { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
+      { id: "id-3", name: "Eden Clements", number: "645-17-79" },
+      { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
+    ],
+    filter: "",
   };
-  onLeaveFeedback = name => {
-    this.setState(prevState => ({
-      [name]: prevState[name] + 1,
-    }));
+  onFormSubmitHandler = (data) => {
+    this.setState({ contacts: [...this.state.contacts, data] });
+    console.log(this.state.contacts);
   };
 
-  countTotalFeedback = () =>
-    this.state.good + this.state.neutral + this.state.bad;
-
-  countPositiveFeedbackPercentage = () => {
-    const sumState = this.state.good + this.state.neutral + this.state.bad;
-    const resSum = Math.floor((this.state.good * 100) / sumState);
-    return resSum;
+  onHandleFilter = (e) => {
+    this.setState({ filter: e.currentTarget.value });
   };
 
   render() {
     return (
       <>
-        <Section title={'Please leave feedback'}>
-          <FeedbackOptions onLeaveFeedback={this.onLeaveFeedback} />
+        <Section title={"Phonebook"}>
+          <PhonebookForm
+            onHandlerFilter={this.onHandlerFilter}
+            onSubmit={this.onFormSubmitHandler}
+            onHandleFilter={this.onHandleFilter}
+          />
         </Section>
-        <Section title={'Statistics'}>
-          <Statistics
-            good={this.state.good}
-            neutral={this.state.neutral}
-            bad={this.state.bad}
-            total={this.countTotalFeedback}
-            positivePercentage={this.countPositiveFeedbackPercentage}
+        <Section title={"Contacts"}>
+          <Contacts
+            contacts={this.state.contacts}
+            filter={this.state.filter}
+            onDeleteContact={this.onDeleteContact}
           />
         </Section>
       </>
