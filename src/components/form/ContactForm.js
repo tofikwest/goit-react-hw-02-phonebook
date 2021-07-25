@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { v4 as uuidv4 } from "uuid";
-
+import Styles from "./Form.module.css";
 class ContactForm extends Component {
   state = {
     name: "",
@@ -33,10 +33,11 @@ class ContactForm extends Component {
   render() {
     return (
       <>
-        <form onSubmit={this.onHandleSubmit}>
+        <form onSubmit={this.onHandleSubmit} className={Styles.form}>
           <label htmlFor={this.nameInputId}>
             Full Name
             <input
+              className={Styles.inputSec}
               value={this.state.name}
               onChange={this.onHandleContactForm}
               type="text"
@@ -50,6 +51,7 @@ class ContactForm extends Component {
           <label htmlFor={this.telInputId}>
             Mobile number
             <input
+              className={Styles.input}
               value={this.state.number}
               onChange={this.onHandleContactForm}
               type="tel"
@@ -61,7 +63,7 @@ class ContactForm extends Component {
             />
           </label>
 
-          <button>Add contact</button>
+          <button className={Styles.btn}>Add contact</button>
         </form>
       </>
     );
