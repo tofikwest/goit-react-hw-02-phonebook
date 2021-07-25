@@ -12,9 +12,10 @@ class ContactForm extends Component {
 
   onHandleSubmit = (event) => {
     event.preventDefault();
-    if (this.props.sameNameDenied(this.state.name)) {
-      return this.props.onSubmit(this.state);
-    }
+
+    const { name, number } = this.state;
+
+    this.props.onSubmit(name, number);
     this.reset();
   };
 

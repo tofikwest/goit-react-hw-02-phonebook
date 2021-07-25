@@ -3,6 +3,7 @@ import ContactsList from "./components/contactsList/ContactsList";
 import Filter from "./components/filter/Filter";
 import ContactForm from "./components/form/ContactForm";
 import Section from "./components/section/Section";
+import { v4 as uuidv4 } from "uuid";
 
 class App extends Component {
   state = {
@@ -14,8 +15,15 @@ class App extends Component {
     ],
     filter: "",
   };
-  onFormSubmitHandler = (data) => {
-    this.setState({ contacts: [...this.state.contacts, data] });
+  onFormSubmitHandler = (name, number) => {
+    if (this.state.contacts.find((contact) => contact.name === name)) {
+      alert("Введите другое имя!");
+      return;
+    }
+
+    this.setState((prevState) => ({
+      contacts: [...prevState.contacts, { id: uuidv4(), name, number }],
+    }));
   };
 
   onHandleFilter = (e) => {
@@ -27,12 +35,6 @@ class App extends Component {
     this.setState({ [name]: value });
   };
 
-  sameNameDenied = (name) => {
-    if (this.state.contacts.find((contact) => contact.name === name)) {
-      alert("Введите другое имя");
-      return;
-    }
-  };
   deleteContact = (id) => {
     this.setState((prevState) => ({
       contacts: prevState.contacts.filter((contact) => contact.id !== id),
@@ -45,7 +47,6 @@ class App extends Component {
           <ContactForm
             onHandlerFilter={this.onHandlerFilter}
             onSubmit={this.onFormSubmitHandler}
-            sameNameDenied={this.sameNameDenied}
           />
         </Section>
         <Section title={"Contacts"}>
